@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MovieHub - Movie List</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0b0b0b;
+            color: #f1f1f1;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* =========================
+            SIDEBAR
+        ========================= */
+
+        .sidebar {
+            width: 240px;
+            min-height: 100vh;
+            background-color: #121212;
+            color: white;
+            padding: 25px 15px;
+            flex-shrink: 0;
+            border-right: 1px solid #222;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .logo h1 {
+            margin: 0;
+            font-size: 25px;
+            color: #ffffff;
+            letter-spacing: 1px;
+        }
+
+        .logo h1 span {
+            color: #ff1e1e;
+        }
+
+        .logo p {
+            margin: 6px 0 0;
+            font-size: 13px;
+            color: #888;
+        }
+
+        .nav-title {
+            font-size: 12px;
+            color: #777;
+            text-transform: uppercase;
+            margin: 0 12px 10px;
+            letter-spacing: 1px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            width: 100%;
+            padding: 13px 14px;
+            margin-bottom: 8px;
+
+            color: #ccc;
+            text-decoration: none;
+
+            border-radius: 8px;
+            font-size: 15px;
+
+            transition: 0.2s;
+        }
+
+        .nav-link:hover {
+            background-color: #1c1c1c;
+            color: #fff;
+        }
+
+        .nav-link.active {
+            background-color: #cc0000;
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav-icon {
+            width: 22px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+
+        /* =========================
+            MAIN CONTENT
+        ========================= */
+
+        .main-content {
+            flex: 1;
+            padding: 45px;
+            overflow-x: auto;
+            background-color: #0b0b0b;
+        }
+
+        .movie-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
+
+            background-color: #141414;
+
+            border-radius: 15px;
+
+            padding: 25px;
+
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
+            border: 1px solid #222;
+        }
+
+
+        /* =========================
+            HEADER
+        ========================= */
+
+        .header {
+            background-color: #1a1a1a;
+            color: #ffffff;
+
+            padding: 18px;
+
+            margin: -25px -25px 20px -25px;
+
+            border-radius: 15px 15px 0 0;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #282828;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 24px;
+            color: #fff;
+        }
+
+
+        /* =========================
+            ADD MOVIE BUTTON
+        ========================= */
+
+        .add-button {
+            background-color: #cc0000;
+            color: white;
+
+            padding: 10px 16px;
+
+            border-radius: 7px;
+
+            text-decoration: none;
+
+            font-size: 14px;
+            font-weight: bold;
+
+            transition: 0.2s;
+        }
+
+        .add-button:hover {
+            background-color: #ff1e1e;
+        }
+
+
+        /* =========================
+            TABLE
+        ========================= */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #1a1a1a;
+            color: #ff4d4d;
+
+            padding: 13px 10px;
+
+            text-align: left;
+
+            font-size: 14px;
+            border-bottom: 2px solid #333;
+        }
+
+        td {
+            padding: 13px 10px;
+
+            border-bottom: 1px solid #222;
+
+            color: #d1d1d1;
+
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background-color: #191919;
+        }
+
+
+        /* =========================
+            STATUS
+        ========================= */
+
+        .status {
+            background-color: #2b0b0b;
+
+            color: #ff6b6b;
+
+            padding: 6px 10px;
+
+            border-radius: 15px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+            border: 1px solid #551a1a;
+        }
+
+
+        /* =========================
+            EMPTY MESSAGE
+        ========================= */
+
+        .empty-message {
+            text-align: center;
+
+            padding: 25px;
+
+            color: #777;
+        }
+
+
+        /* =========================
+            RESPONSIVE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 190px;
+            }
+
+            .main-content {
+                padding: 25px;
+            }
+
+            table {
+                min-width: 900px;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            body {
+                display: block;
+            }
+
+            .sidebar {
+                width: 100%;
+                min-height: auto;
+            }
+
+            .logo {
+                margin-bottom: 20px;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         LEFT SIDEBAR
+    ========================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <h1>Movie<span>Hub</span></h1>
+
+            <p>Movie Management System</p>
+
+        </div>
+
+
+        <p class="nav-title">
+            Navigation
+        </p>
+
+
+        <!-- HOME / LIST -->
+
+        <a href="{% url 'movie_list' %}" class="nav-link active">
+
+            <span class="nav-icon">⌂</span>
+
+            <span>Home</span>
+
+        </a>
+
+
+        <!-- MOVIES -->
+
+        <a href="{% url 'movie_list' %}" class="nav-link">
+
+            <span class="nav-icon">🎬</span>
+
+            <span>Movies</span>
+
+        </a>
+
+
+        <!-- ADD MOVIE -->
+
+        <a href="{% url 'add_movie' %}" class="nav-link">
+
+            <span class="nav-icon">＋</span>
+
+            <span>Add Movie</span>
+
+        </a>
+
+    </aside>
+
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================= -->
+
+    <main class="main-content">
+
+
+        <div class="movie-container">
+
+
+            <!-- HEADER -->
+
+            <div class="header">
+
+                <h2>
+                    Movie List
+                </h2>
+
+
+                <a href="{% url 'add_movie' %}" class="add-button">
+
+                    + Add Movie
+
+                </a>
+
+            </div>
+
+
+
+            <!-- MOVIE TABLE -->
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Title</th>
+
+                        <th>Type</th>
+
+                        <th>Genre</th>
+
+                        <th>Release Year</th>
+
+                        <th>Status</th>
+
+                        <th>Rating</th>
+
+                        <th>Description</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    {% for movie in movies %}
+
+                    <tr>
+
+                        <td>
+                            M{{ movie.id|stringformat:"03d" }}
+                        </td>
+
+                        <td>
+                            {{ movie.title }}
+                        </td>
+
+                        <td>
+                            {{ movie.type }}
+                        </td>
+
+                        <td>
+                            {{ movie.genre }}
+                        </td>
+
+                        <td>
+                            {{ movie.release_year }}
+                        </td>
+
+                        <td>
+                            <span class="status">
+                                {{ movie.status }}
+                            </span>
+                        </td>
+
+                        <td>
+                            {{ movie.rating }}
+                        </td>
+
+                        <td>
+                            {{ movie.description }}
+                        </td>
+
+                    </tr>
+
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="8" class="empty-message">
+
+                            No movies found.
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+
+                </tbody>
+
+            </table>
+
+
+        </div>
+
+
+    </main>
+
+
+</body>
+
+</html>
