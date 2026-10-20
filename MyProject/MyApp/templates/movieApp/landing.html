@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MovieHub - Home</title>
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0b0b0b;
+            color: #f1f1f1;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* ===== SIDEBAR (same as movie_list) ===== */
+        .sidebar { width: 240px; min-height: 100vh; background-color: #121212; padding: 25px 15px; flex-shrink: 0; border-right: 1px solid #222; }
+        .logo { text-align: center; margin-bottom: 35px; }
+        .logo h1 { margin: 0; font-size: 25px; color: #fff; letter-spacing: 1px; }
+        .logo h1 span { color: #ff1e1e; }
+        .logo p { margin: 6px 0 0; font-size: 13px; color: #888; }
+        .nav-title { font-size: 12px; color: #777; text-transform: uppercase; margin: 0 12px 10px; letter-spacing: 1px; }
+        .nav-link { display: flex; align-items: center; gap: 12px; width: 100%; padding: 13px 14px; margin-bottom: 8px; color: #ccc; text-decoration: none; border-radius: 8px; font-size: 15px; transition: 0.2s; }
+        .nav-link:hover { background-color: #1c1c1c; color: #fff; }
+        .nav-link.active { background-color: #cc0000; color: #fff; font-weight: bold; }
+        .nav-icon { width: 22px; text-align: center; font-size: 17px; }
+
+        /* ===== MAIN ===== */
+        .main-content { flex: 1; padding: 45px; min-width: 0; }
+        .page { width: 100%; max-width: 1200px; margin: auto; }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, #1a1a1a 0%, #141414 55%, #2b0b0b 100%);
+            border: 1px solid #222;
+            border-radius: 15px;
+            padding: 60px 40px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
+            margin-bottom: 35px;
+        }
+        .hero .eyebrow { color: #ff4d4d; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; margin: 0 0 12px; }
+        .hero h2 { margin: 0 0 14px; font-size: 38px; line-height: 1.2; color: #fff; }
+        .hero h2 span { color: #ff1e1e; }
+        .hero p { margin: 0 0 28px; max-width: 560px; color: #b5b5b5; font-size: 16px; line-height: 1.6; }
+        .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+
+        .add-button { background-color: #cc0000; color: #fff; padding: 12px 20px; border-radius: 7px; text-decoration: none; font-size: 14px; font-weight: bold; transition: 0.2s; display: inline-block; }
+        .add-button:hover { background-color: #ff1e1e; }
+        .ghost-button { color: #ccc; padding: 11px 20px; border-radius: 7px; border: 1px solid #333; text-decoration: none; font-size: 14px; transition: 0.2s; display: inline-block; }
+        .ghost-button:hover { background-color: #1c1c1c; color: #fff; }
+
+        .hero-stat { margin-top: 30px; color: #888; font-size: 14px; }
+        .hero-stat strong { color: #ff6b6b; font-size: 22px; margin-right: 6px; }
+
+        /* ===== SECTIONS ===== */
+        .section { margin-bottom: 35px; }
+        .section-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 16px; }
+        .section-header h3 { margin: 0; font-size: 20px; color: #fff; }
+        .section-header a { color: #ff4d4d; font-size: 14px; text-decoration: none; }
+        .section-header a:hover { color: #ff1e1e; }
+
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
+
+        .movie-card {
+            background-color: #141414;
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .movie-card:hover { border-color: #551a1a; transform: translateY(-3px); }
+        .movie-card .card-id { font-size: 12px; color: #777; }
+        .movie-card h4 { margin: 0; font-size: 17px; color: #fff; overflow-wrap: anywhere; }
+        .movie-card .meta { font-size: 13px; color: #9a9a9a; }
+        .movie-card .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+        .rating { color: #ff6b6b; font-weight: bold; font-size: 14px; }
+
+        .status { background-color: #2b0b0b; color: #ff6b6b; padding: 5px 10px; border-radius: 15px; font-size: 12px; font-weight: bold; border: 1px solid #551a1a; }
+
+        .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+        .chip { background-color: #1a1a1a; border: 1px solid #282828; color: #d1d1d1; padding: 8px 14px; border-radius: 20px; font-size: 13px; }
+
+        .empty-message { text-align: center; padding: 25px; color: #777; background-color: #141414; border: 1px solid #222; border-radius: 12px; }
+
+        a:focus-visible { outline: 2px solid #ff1e1e; outline-offset: 2px; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .sidebar { width: 190px; }
+            .main-content { padding: 25px; }
+            .hero { padding: 40px 25px; }
+            .hero h2 { font-size: 30px; }
+        }
+        @media (max-width: 650px) {
+            body { display: block; }
+            .sidebar { width: 100%; min-height: auto; }
+            .logo { margin-bottom: 20px; }
+            .main-content { padding: 20px; }
+            .card-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+            .add-button, .ghost-button { padding: 14px 20px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; }
+            .movie-card:hover { transform: none; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <div class="logo">
+            <h1>Movie<span>Hub</span></h1>
+            <p>Movie Management System</p>
+        </div>
+
+        <p class="nav-title">Navigation</p>
+
+        <a href="{% url 'landing' %}" class="nav-link active">
+            <span class="nav-icon">⌂</span><span>Home</span>
+        </a>
+        <a href="{% url 'movie_list' %}" class="nav-link">
+            <span class="nav-icon">🎬</span><span>Movies</span>
+        </a>
+        <a href="{% url 'add_movie' %}" class="nav-link">
+            <span class="nav-icon">＋</span><span>Add Movie</span>
+        </a>
+    </aside>
+
+    <main class="main-content">
+        <div class="page">
+
+            <!-- HERO -->
+            <section class="hero">
+                <p class="eyebrow">Your movie collection</p>
+                <h2>Discover and manage every movie in <span>MovieHub</span></h2>
+                <p>Browse your collection, see what's been added recently, and keep track of ratings, genres and release years in one place.</p>
+
+                <div class="hero-actions">
+                    <a href="{% url 'movie_list' %}" class="add-button">Browse Movies</a>
+                    <a href="{% url 'add_movie' %}" class="ghost-button">+ Add Movie</a>
+                </div>
+
+                <div class="hero-stat">
+                    <strong>{{ total }}</strong> movie{{ total|pluralize }} in the library
+                </div>
+            </section>
+
+            <!-- RECENTLY ADDED -->
+            <section class="section">
+                <div class="section-header">
+                    <h3>Recently Added</h3>
+                    <a href="{% url 'movie_list' %}">View all →</a>
+                </div>
+
+                {% if recent_movies %}
+                <div class="card-grid">
+                    {% for movie in recent_movies %}
+                    <article class="movie-card">
+                        <span class="card-id">M{{ movie.id|stringformat:"03d" }} · {{ movie.type }}</span>
+                        <h4>{{ movie.title }}</h4>
+                        <span class="meta">{{ movie.genre }} · {{ movie.release_year }}</span>
+                        <div class="card-footer">
+                            <span class="status">{{ movie.status }}</span>
+                            <span class="rating">★ {{ movie.rating }}</span>
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-message">No movies yet. <a href="{% url 'add_movie' %}" style="color:#ff4d4d;">Add your first movie</a>.</div>
+                {% endif %}
+            </section>
+
+            <!-- TOP RATED -->
+            {% if top_rated %}
+            <section class="section">
+                <div class="section-header">
+                    <h3>Top Rated</h3>
+                </div>
+                <div class="card-grid">
+                    {% for movie in top_rated %}
+                    <article class="movie-card">
+                        <span class="card-id">M{{ movie.id|stringformat:"03d" }} · {{ movie.type }}</span>
+                        <h4>{{ movie.title }}</h4>
+                        <span class="meta">{{ movie.genre }} · {{ movie.release_year }}</span>
+                        <div class="card-footer">
+                            <span class="status">{{ movie.status }}</span>
+                            <span class="rating">★ {{ movie.rating }}</span>
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+
+            <!-- GENRES -->
+            {% if genres %}
+            <section class="section">
+                <div class="section-header">
+                    <h3>Genres in the Library</h3>
+                </div>
+                <div class="chips">
+                    {% for genre in genres %}
+                    <span class="chip">{{ genre }}</span>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+
+        </div>
+    </main>
+
+</body>
+</html>

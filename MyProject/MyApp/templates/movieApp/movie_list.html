@@ -238,6 +238,52 @@
 
 
         /* =========================
+            ACTIONS (NEW)
+        ========================= */
+
+        .actions {
+            white-space: nowrap;
+        }
+
+        .action-link {
+            display: inline-block;
+
+            padding: 6px 12px;
+            margin-right: 6px;
+
+            border-radius: 6px;
+
+            font-size: 13px;
+            font-weight: bold;
+            text-decoration: none;
+
+            transition: 0.2s;
+        }
+
+        .action-link.edit {
+            color: #ccc;
+            border: 1px solid #333;
+        }
+
+        .action-link.edit:hover {
+            background-color: #1c1c1c;
+            color: #fff;
+        }
+
+        .action-link.delete {
+            color: #ff6b6b;
+            border: 1px solid #551a1a;
+            background-color: #2b0b0b;
+        }
+
+        .action-link.delete:hover {
+            background-color: #cc0000;
+            border-color: #cc0000;
+            color: #fff;
+        }
+
+
+        /* =========================
             EMPTY MESSAGE
         ========================= */
 
@@ -318,9 +364,9 @@
         </p>
 
 
-        <!-- HOME / LIST -->
+        <!-- HOME / LANDING -->
 
-        <a href="{% url 'movie_list' %}" class="nav-link active">
+        <a href="{% url 'landing' %}" class="nav-link">
 
             <span class="nav-icon">⌂</span>
 
@@ -331,7 +377,7 @@
 
         <!-- MOVIES -->
 
-        <a href="{% url 'movie_list' %}" class="nav-link">
+        <a href="{% url 'movie_list' %}" class="nav-link active">
 
             <span class="nav-icon">🎬</span>
 
@@ -407,6 +453,9 @@
 
                         <th>Description</th>
 
+                        <!-- NEW -->
+                        <th>Actions</th>
+
                     </tr>
 
                 </thead>
@@ -453,6 +502,12 @@
                             {{ movie.description }}
                         </td>
 
+                        <!-- NEW -->
+                        <td class="actions">
+                            <a href="{% url 'edit_movie' movie.id %}" class="action-link edit">Edit</a>
+                            <a href="{% url 'delete_movie' movie.id %}" class="action-link delete">Delete</a>
+                        </td>
+
                     </tr>
 
 
@@ -460,7 +515,8 @@
 
                     <tr>
 
-                        <td colspan="8" class="empty-message">
+                        <!-- CHANGED: colspan 8 -> 9 -->
+                        <td colspan="9" class="empty-message">
 
                             No movies found.
 
